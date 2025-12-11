@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>Nanoputer</title>
+        <link rel="preconnect" href="https://fonts.googleapis.com" />
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+        <link
+            href="https://fonts.googleapis.com/css2?family=Roboto:wdth,wght@75..100,100..900&display=swap"
+            rel="stylesheet"
+        />
+        <link rel="stylesheet" href="style.css" />
+        <script src="script.js" defer></script>
+    </head>
+    <body>
+        <header>
+            <div class="logo">NanoPuter</div>
+            <div id="usage"></div>
+            <button id="reset">RESET</button>
+        </header>
+        <main>
+            <div class="input">
+                <img id="input" src="" alt="" />
+            </div>
+            <div class="output">
+                <button onclick="app.downloadImg()">
+                    <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        viewBox="0 0 256 256"
+                    >
+                        <rect width="256" height="256" fill="none" />
+                        <path
+                            d="M224,144v64a8,8,0,0,1-8,8H40a8,8,0,0,1-8-8V144a8,8,0,0,1,16,0v56H208V144a8,8,0,0,1,16,0Zm-101.66,5.66a8,8,0,0,0,11.32,0l40-40A8,8,0,0,0,168,96H136V32a8,8,0,0,0-16,0V96H88a8,8,0,0,0-5.66,13.66Z"
+                            fill="white"
+                        />
+                    </svg>
+                </button>
+                <img id="output" src="" alt="" />
+            </div>
+        </main>
+        <form onsubmit="return handleSubmit(event)">
+            <div class="action">
+                <button type="button" onclick="app.pick()">
+                    <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        viewBox="0 0 256 256"
+                    >
+                        <rect width="256" height="256" fill="none" />
+                        <path
+                            fill="white"
+                            d="M74.34,77.66a8,8,0,0,1,0-11.32l48-48a8,8,0,0,1,11.32,0l48,48a8,8,0,0,1-11.32,11.32L136,43.31V128a8,8,0,0,1-16,0V43.31L85.66,77.66A8,8,0,0,1,74.34,77.66ZM240,136v64a16,16,0,0,1-16,16H32a16,16,0,0,1-16-16V136a16,16,0,0,1,16-16h68a4,4,0,0,1,4,4v3.46c0,13.45,11,24.79,24.46,24.54A24,24,0,0,0,152,128v-4a4,4,0,0,1,4-4h68A16,16,0,0,1,240,136Zm-40,32a12,12,0,1,0-12,12A12,12,0,0,0,200,168Z"
+                        />
+                    </svg>
+                </button>
+                <button type="button" onclick="app.switchImg()">
+                    <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        viewBox="0 0 256 256"
+                    >
+                        <rect width="256" height="256" fill="none" />
+                        <path
+                            d="M213.66,181.66l-32,32A8,8,0,0,1,168,208V184H48a8,8,0,0,1,0-16H168V144a8,8,0,0,1,13.66-5.66l32,32A8,8,0,0,1,213.66,181.66Zm-139.32-64A8,8,0,0,0,88,112V88H208a8,8,0,0,0,0-16H88V48a8,8,0,0,0-13.66-5.66l-32,32a8,8,0,0,0,0,11.32Z"
+                            fill="white"
+                        />
+                    </svg>
+                </button>
+            </div>
+            <input type="file" name="" id="" accept="image/*" />
+            <textarea name="" id="inst"></textarea>
+            <div class="action">
+                <button type="submit">
+                    <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        viewBox="0 0 256 256"
+                    >
+                        <rect width="256" height="256" fill="none" />
+                        <path
+                            d="M240,128a15.74,15.74,0,0,1-7.6,13.51L88.32,229.65a16,16,0,0,1-16.2.3A15.86,15.86,0,0,1,64,216.13V39.87a15.86,15.86,0,0,1,8.12-13.82,16,16,0,0,1,16.2.3L232.4,114.49A15.74,15.74,0,0,1,240,128Z"
+                            fill="white"
+                        />
+                    </svg>
+                </button>
+            </div>
+        </form>
+        <div id="overlay">
+            <div class="loader">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256">
+                    <rect width="256" height="256" fill="none" />
+                    <path
+                        d="M168,40a97,97,0,0,1,56,88,96,96,0,0,1-192,0A97,97,0,0,1,88,40"
+                        fill="none"
+                        stroke="currentColor"
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                        stroke-width="16"
+                    />
+                </svg>
+            </div>
+        </div>
+        <!-- <script>
+            const _fetch = window.fetch;
+            window.fetch = (...args) =>
+                _fetch(...args).then(async (r) => {
+                    if (!r.ok) return r; // don't break errors
+                    const data = await r.clone().json(); // read body
+                    var modified = data;
+                    if (data.hasOwnProperty("usage")) {
+                        modified = {
+                            usage: {
+                                total: 0,
+                            },
+                            appTotals: {},
+                            allowanceInfo: {
+                                remaining: 50000000,
+                                monthUsageAllowance: 50000000,
+                                addons: {},
+                            },
+                        };
+                    } // your function
+                    return new Response(JSON.stringify(modified), {
+                        status: r.status,
+                        statusText: r.statusText,
+                        headers: r.headers,
+                    });
+                });
+        </script> -->
+        <script src="https://js.puter.com/v2/"></script>
+
+        <script>
+            function handleSubmit(e) {
+                e.preventDefault();
+                // img.innerHTML = "";
+                app.overlay.show();
+                puter.ai
+                    .txt2img(inst.value, {
+                        model: "gemini-2.5-flash-image-preview",
+                        // model: "google/gemini-3-pro-image",
+                        // quality: "hd",
+                        input_image: input.src.split(",")[1],
+                        input_image_mime_type: "image/png",
+                        test_mode: true,
+                    })
+                    .then((imgEl) => {
+                        window.output.src = imgEl.src;
+                        app.overlay.hide();
+                        app.refreshUsage();
+                    })
+                    .catch((err) => {
+                        alert("ERROR");
+                        console.log(err);
+                        app.overlay.hide();
+                    });
+
+                return false; // guarantee no form submission
+            }
+        </script>
+    </body>
+</html>
