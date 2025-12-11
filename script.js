@@ -33,6 +33,37 @@ const app = {
                 attempt_temp_user_creation: true,
             });
         });
+        window.button34.addEventListener("click", (e) => {
+            // create a 1600x1600 plain white png and add it's base64 to window.input.src
+            const canvas = document.createElement("canvas");
+            canvas.width = 1200;
+            canvas.height = 1600;
+            const ctx = canvas.getContext("2d");
+            ctx.fillStyle = "white";
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
+            window.input.src = canvas.toDataURL("image/png");
+        });
+        window.button43.addEventListener("click", (e) => {
+            // create a 1600x1600 plain white png and add it's base64 to window.input.src
+            const canvas = document.createElement("canvas");
+            canvas.width = 1600;
+            canvas.height = 1200;
+            const ctx = canvas.getContext("2d");
+            ctx.fillStyle = "white";
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
+            window.input.src = canvas.toDataURL("image/png");
+        });
+        window.button11.addEventListener("click", (e) => {
+            // create a 1600x1600 plain white png and add it's base64 to window.input.src
+            const canvas = document.createElement("canvas");
+            canvas.width = 1600;
+            canvas.height = 1600;
+            const ctx = canvas.getContext("2d");
+            ctx.fillStyle = "white";
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
+            window.input.src = canvas.toDataURL("image/png");
+        });
+        window.input.src = "";
         app.refreshUsage();
     },
     pick() {
